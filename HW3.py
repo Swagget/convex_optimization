@@ -30,7 +30,7 @@ X = cp.Variable((2,2), symmetric=True)
 cp.objective = cp.Minimize(cp.norm(X, 2))
 
 constraint_matrix = np.array([[1,-2],[-2,1]])
-constraint = [X >= constraint_matrix]
+constraint = [(X-constraint_matrix) >> 0]
 
 problem = cp.Problem(cp.objective, constraint)
 X_value = problem.solve()
