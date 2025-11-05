@@ -24,9 +24,6 @@ problem = cp.Problem(objective, constraints_a)
 solution_a = problem.solve()
 
 print("Optimal value of a:", a.value)
-# print("Optimal value of lambda_1:", lambda_1.value)
-# print("Optimal value of lambda_2:", lambda_2.value)
-# print("Optimal value of the objective function:", solution)
 
 fixed_a = np.array(a.value)
 
@@ -47,13 +44,17 @@ print("fixed_a_d:",fixed_a_d)
 closest_from_D = cp.Variable((2,1))
 q2 = q2.reshape(-1,1)
 constraints_d = [H2@closest_from_D <= q2]
-print("H1:",H1, H1.shape)
-print("H2:",H2, H2.shape)
-print("q2:",q2,q2.shape)
-print("q1:",q1,q1.shape)
 
 problem_d = cp.Problem(cp.Maximize(fixed_a_d.T@closest_from_D), constraints_d)
 
 solution_d = problem_d.solve()
 
 print("Optimal value of closest_from_D:", closest_from_D.value)
+
+midpoint_between_closest_points = (closest_from_C.value + closest_from_D.value)/2
+
+b = fixed_a.T @ midpoint_between_closest_points
+
+print("Optimal value of b:", b)
+
+print("Equation of separating hyperplane: {}^T x = {}".format(fixed_a.flatten(), b))
